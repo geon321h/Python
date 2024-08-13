@@ -3,8 +3,9 @@ Created on 2024. 8. 8.
 
 @author: user
 '''
-
+d = {}
 while True :
+    print()
     print('---Menu 선택---')
     print('1.전체 조회')
     print('2.추가')
@@ -47,15 +48,84 @@ while True :
                 print('가격은 숫자로 입력하세요')
             else :
                 break
-                    
+            
         bw = open('File.txt','a',encoding='UTF-8') 
         bw.write(title+','+str(price)+'\n')
         bw.close()
-        
+                    
     elif menu == 3:
-        pass
+        while True :
+            try :
+                title = input('제목:')
+                if len(title)>5 :
+                    raise ValueError
+                else :
+                    break
+            except ValueError:
+                print('제목 5글자 이하로 입력하세요')
+                
+        
+        while True :
+            try :
+                price = int(input('가격:'))
+               
+            except ValueError:
+                print('가격은 숫자로 입력하세요')
+            else :
+                break
+        
+        br = open('File.txt','r',encoding='UTF-8') 
+        for one in br :
+            s = one.split(',')
+            d[s[0]] = s[1]
+            #print('d: ',d)
+        
+        flag = False
+        for key in d.keys() :
+            if key == title :
+                #print('찾음')
+                d[key] = str(price) + "\n"
+                flag = True
+        #if flag == False :
+            #print('못찾음')
+        
+        br.close()
+        
+        bw = open('File.txt','w',encoding='UTF-8')
+        bList = []
+        for key in d :
+            bList.append(key+','+d[key])
+        
+        for book in bList :
+            bw.write(book)
+            
+        bw.close()
     elif menu == 4:
-        pass
+        title = input('삭제할 제목:')
+        br = open('File.txt','r',encoding='UTF-8')
+        for one in bList:
+            s = one.split(',')
+            d[s[0]] = s[1]
+            
+        for key in d :
+            if key == title :
+                print('찾음')
+                del d[key]
+                flag = True
+                break
+        if flag == False:
+            print('몾찾음')
+        br.close() 
+        
+        bw = open('File.txt','w',encoding='UTF-8')
+        bList = []
+        for key in d :
+            bList.append(key+','+d[key])
+        
+        for book in bList :
+            bw.write(book)
+            
+        bw.close()
     elif menu == 0:
         break
     else :
